@@ -88,8 +88,17 @@
     * Favorites
     * Settings
       
-- **Languages**
-  - Russian and Spanish translations.
+- **Multipaste**
+  - Add multiple texts at once
+    
+- **Manual Entry**
+  - Add a single text manually
+    
+- **About Section**
+  - All app info in one place
+  
+- **Share from Other Apps**
+  - Long-press any text in any app, tap Share, and send it to our app to save instantly
     
 - **Copy selectively**
   - You can copy specific selections instead of the entire text.
