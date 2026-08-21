@@ -64,4 +64,5 @@
     <string name="app_version_title">Версия приложения</string>
     <string name="app_feedback_support_title"><![CDATA[Обратная связь и поддержка]]></string>
     <string name="view_source_code_title">Просмотреть исходный код</string>
+    <string name="edit_title">Редактировать</string>
 </resources>

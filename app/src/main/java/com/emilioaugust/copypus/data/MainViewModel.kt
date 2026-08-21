@@ -60,4 +60,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             )
         }
     }
+
+    fun updateItem(item: ClipboardItem) {
+        viewModelScope.launch {
+            repository.updateItem(item)
+        }
+    }
 }

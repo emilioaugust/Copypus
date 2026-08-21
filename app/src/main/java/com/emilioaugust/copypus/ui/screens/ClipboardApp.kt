@@ -11,8 +11,10 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -71,6 +73,7 @@ import com.emilioaugust.copypus.ClipboardData
 import com.emilioaugust.copypus.data.MainViewModel
 import com.emilioaugust.copypus.data.ClipboardItem
 import com.emilioaugust.copypus.ClipboardManagerHelper
+import com.emilioaugust.copypus.ui.EditSheet
 import com.emilioaugust.copypus.ui.ManualEntrySheet
 import com.emilioaugust.copypus.ui.MultiPasteSheet
 import com.emilioaugust.copypus.utils.ClipboardType
@@ -92,7 +95,7 @@ fun ClipboardApp(viewModel: MainViewModel) {
     }
     val clipboardHelper = remember { ClipboardManagerHelper(context.applicationContext) }
     val groupedItems = filteredItems.groupBy { formatSectionTitle(it.timestamp, context) }
-
+    var editingItem by remember { mutableStateOf<ClipboardItem?>(null) }
     val snackbarHostState = remember { SnackbarHostState() }
     var currentSheet by remember { mutableStateOf(AddSheet.NONE) }
     val scope = rememberCoroutineScope()
@@ -260,6 +263,9 @@ fun ClipboardApp(viewModel: MainViewModel) {
                                                 viewModel.restoreItem(item)
                                             }
                                         }
+                                    },
+                                    onLongClick = {
+                                        editingItem = item
                                     }
                                 )
                             }
@@ -267,6 +273,27 @@ fun ClipboardApp(viewModel: MainViewModel) {
                     }
                 }
             }
+        }
+    }
+
+    editingItem?.let { item ->
+        ModalBottomSheet(
+            onDismissRequest = {
+                editingItem = null
+            },
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+        ) {
+            EditSheet(
+                initialText = item.text,
+                onDismiss = { editingItem = null },
+                onSave = { newText ->
+                    viewModel.updateItem(
+                        item.copy(text = newText)
+                    )
+                    editingItem = null
+                }
+            )
         }
     }
 
@@ -312,8 +339,10 @@ fun ClipboardApp(viewModel: MainViewModel) {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ClipboardItemCard(item: ClipboardItem, onCopy: () -> Unit, onFavorite: () -> Unit, onDelete: () -> Unit) {
+fun ClipboardItemCard(item: ClipboardItem, onCopy: () -> Unit, onFavorite: () -> Unit, onDelete: () -> Unit,
+                      onLongClick: () -> Unit) {
     var expanded by remember { mutableStateOf(false) }
     val dismissState = rememberSwipeToDismissBoxState(
         confirmValueChange = { value ->
@@ -398,6 +427,10 @@ fun ClipboardItemCard(item: ClipboardItem, onCopy: () -> Unit, onFavorite: () ->
                     modifier = Modifier
                         .clip(MaterialTheme.shapes.small)
                         .background(MaterialTheme.colorScheme.secondaryContainer)
+                        .combinedClickable(
+                            onClick = {},
+                            onLongClick = onLongClick
+                        )
                 ) {
                     Icon(
                         imageVector = when (type) {

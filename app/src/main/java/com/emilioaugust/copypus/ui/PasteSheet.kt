@@ -195,3 +195,47 @@ fun ManualEntrySheet(onDismiss: () -> Unit, onSave: (String) -> Unit) {
         }
     }
 }
+
+@Composable
+fun EditSheet(initialText: String, onDismiss: () -> Unit, onSave: (String) -> Unit) {
+    var currentText by rememberSaveable(initialText) { mutableStateOf(initialText) }
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .padding(20.dp)) {
+        Text(
+            text = stringResource(R.string.edit_title),
+            style = MaterialTheme.typography.titleLarge
+        )
+
+        Spacer(Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = currentText,
+            onValueChange = {
+                currentText = it
+            },
+            modifier = Modifier.fillMaxWidth(),
+            minLines = 4,
+            placeholder = {
+                Text(stringResource(R.string.paste_text_here_placeholder), color = Color.Gray)
+            }
+        )
+
+        Spacer(Modifier.height(12.dp))
+
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            enabled = currentText.isNotBlank(),
+            onClick = {
+                if (currentText.isNotBlank()) {
+                    onSave(currentText.trim())
+                }
+                onDismiss()
+            }
+        ) {
+            Icon(Icons.Default.Save, null, tint = Color.White)
+            Spacer(Modifier.width(8.dp))
+            Text(stringResource(R.string.save_btn), color = Color.White)
+        }
+    }
+}

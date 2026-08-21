@@ -1,10 +1,8 @@
 package com.emilioaugust.copypus
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -14,12 +12,9 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.LocalContext
-import androidx.core.content.ContextCompat
 import androidx.core.os.LocaleListCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
-import com.emilioaugust.copypus.data.AppLanguage
 import com.emilioaugust.copypus.data.MainViewModel
 import com.emilioaugust.copypus.data.SettingsDataStore
 import com.emilioaugust.copypus.data.SettingsViewModel
@@ -32,7 +27,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlin.jvm.java
 
 class MainActivity : ComponentActivity() {
     private val viewModel: MainViewModel by viewModels()

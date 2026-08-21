@@ -64,4 +64,5 @@
     <string name="app_version_title">App Version</string>
     <string name="app_feedback_support_title"><![CDATA[App Feedback & Support]]></string>
     <string name="view_source_code_title">View Source Code</string>
+    <string name="edit_title">Edit</string>
 </resources>

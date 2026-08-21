@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 @Dao
 interface ClipboardDao {
@@ -35,5 +36,8 @@ interface ClipboardDao {
     LIMIT 1
 """)
     suspend fun getLatestItem(): ClipboardItem?
+
+    @Update
+    suspend fun updateItem(item: ClipboardItem)
 
 }

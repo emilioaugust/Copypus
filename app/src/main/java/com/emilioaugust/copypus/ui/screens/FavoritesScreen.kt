@@ -196,7 +196,8 @@ fun FavoritesScreen(viewModel: MainViewModel) {
                                             viewModel.restoreItem(item)
                                         }
                                     }
-                                }
+                                },
+                                onLongClick = {}
                             )
                         }
                     }

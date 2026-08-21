@@ -17,5 +17,8 @@ class ClipboardRepository(private val dao: ClipboardDao) {
         return dao.getLatestItem()
     }
 
+    suspend fun updateItem(item: ClipboardItem) {
+        dao.updateItem(item)
+    }
 
 }
