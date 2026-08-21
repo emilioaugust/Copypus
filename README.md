@@ -23,13 +23,12 @@
 
 <hr />
 <div align="center">
-    <img src="app/src/main/res/drawable/empty_screen_dark.jpg" alt="Clipboards" style="width: 325px">
-    <img src="app/src/main/res/drawable/card_screen.jpg" alt="Clipboards" style="width: 325px">
-    <img src="app/src/main/res/drawable/add_favorites.gif" alt="Clipboards" style="width: 325px">
-    <img src="app/src/main/res/drawable/settings_screen_dark.jpg" alt="Clipboards" style="width: 325px">
-    <img src="app/src/main/res/drawable/cards_favorites_dark.jpg" alt="Clipboards" style="width: 325px">
-    <img src="app/src/main/res/drawable/delete_clipboard.gif" alt="Clipboards" style="width: 325px">
-    <img src="app/src/main/res/drawable/empty_favorites.jpg" alt="Clipboards" style="width: 325px">
+    <img src="app/src/main/res/drawable/first_screen.png" alt="Clipboards" style="width: 200px">
+    <img src="app/src/main/res/drawable/second_screen.png" alt="Clipboards" style="width: 200px">
+    <img src="app/src/main/res/drawable/third_screen.png" alt="Clipboards" style="width: 200px">
+    <img src="app/src/main/res/drawable/fourth_screen.png" alt="Clipboards" style="width: 200px">
+    <img src="app/src/main/res/drawable/delete_screen.gif" alt="Clipboards" style="width: 200px">
+    <img src="app/src/main/res/drawable/favorite_screen.gif" alt="Clipboards" style="width: 200px">
 </div>
 
 
