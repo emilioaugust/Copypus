@@ -1,0 +1,1 @@
+Clipboard manager that saves and organizes everything you copy

@@ -1,0 +1,28 @@
+<b>Copypus</b> is a simple and powerful clipboard manager for Android. It automatically saves everything you copy — text, links, code snippets, and images — and keeps them organized so you can find and reuse them anytime.
+
+<b>Key features:</b>
+
+<ul>
+<li><b>Automatic clipboard saving</b> — anything copied in other apps is detected and saved when you open Copypus.</li>
+<li><b>Accessibility Service (optional)</b> — automatically captures selected and copied text from other apps. The service is user-controlled and can be disabled at any time.</li>
+<li><b>Image clipboard support</b> — save copied images using the Quick Settings tile.</li>
+<li><b>Favorites</b> — swipe right to add items to favorites and access them from a dedicated tab.</li>
+<li><b>Quick delete gestures</b> — swipe left to instantly remove unwanted clipboard items.</li>
+<li><b>One-tap copying</b> — easily copy saved content back to the clipboard with a dedicated button.</li>
+<li><b>Smart date grouping</b> — history is automatically organized by <i>Today</i>, <i>Yesterday</i>, and older dates.</li>
+<li><b>Fast search</b> — quickly find any copied text with the built-in search.</li>
+<li><b>Clear all history</b> — remove the entire clipboard history with a single tap.</li>
+<li><b>Customizable theme</b> — choose the app theme that fits your style.</li>
+<li><b>Auto-delete options</b> — automatically remove old clipboard items after 1 hour, 5 hours, 1 day, 1 week, 1 month, or never.</li>
+<li><b>Multipaste and manual entry</b> — add multiple texts at once or enter a single item manually.</li>
+<li><b>Share from other apps</b> — long-press any text or image, tap Share, and send it to Copypus to save instantly.</li>
+<li><b>Copy selectively</b> — copy only specific selections instead of the entire text.</li>
+<li><b>Pause monitoring</b> — pause clipboard monitoring directly from the Quick Settings tile.</li>
+<li><b>Quick Tile actions</b> — "Save clipboard" and "Copy last text" tiles for fast access without opening the app.</li>
+<li><b>Edit items</b> — long-press any item to open the edit screen.</li>
+<li><b>Export and import</b> — back up your clipboard history and restore it on any device.</li>
+</ul>
+
+<b>Privacy</b>
+
+Copypus is fully open source and respects your privacy. It does <b>not</b> use Google Play Services, Firebase, Crashlytics, analytics, ads, or any tracking SDK. Nothing leaves your device. The optional Accessibility Service is used only to capture copied text locally and can be turned off at any time in system settings.
