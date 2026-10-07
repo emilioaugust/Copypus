@@ -1,0 +1,11 @@
+Initial release.
+
+Features:
+- Automatic clipboard saving
+- Optional Accessibility Service
+- Image clipboard support via Quick Settings tile
+- Favorites, search, smart date grouping
+- Quick delete and one-tap copy
+- Auto-delete options
+- Export and import
+- Customizable theme
