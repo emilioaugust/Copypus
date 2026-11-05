@@ -61,3 +61,12 @@ val md_theme_dark_onSurfaceVariant = Color(0xFF45483D)
 val md_theme_dark_surfaceTint = Color(0xFFABD468)
 val md_theme_dark_outlineVariant = Color(0xFF45483D)
 val md_theme_dark_scrim = Color(0xFF000000)
+
+fun Color.lighten(factor: Float = 0.7f): Color {
+    return Color(
+        red = red + (1f - red) * factor,
+        green = green + (1f - green) * factor,
+        blue = blue + (1f - blue) * factor,
+        alpha = alpha
+    )
+}
