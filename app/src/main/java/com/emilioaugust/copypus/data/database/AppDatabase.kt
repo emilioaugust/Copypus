@@ -8,10 +8,13 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.emilioaugust.copypus.data.entity.ClipboardItem
 import com.emilioaugust.copypus.data.dao.ClipboardDao
+import com.emilioaugust.copypus.data.dao.SnippetDao
+import com.emilioaugust.copypus.data.entity.SnippetEntity
 
-@Database(entities = [ClipboardItem::class],version = 9)
+@Database(entities = [ClipboardItem::class, SnippetEntity::class], version = 10)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun clipboardDao(): ClipboardDao
+    abstract fun snippetDao(): SnippetDao
     companion object {
         @Volatile
         private var INSTANCE: AppDatabase? = null
@@ -88,6 +91,24 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        private val MIGRATION_9_10 = object : Migration(9, 10) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("""
+                    CREATE TABLE IF NOT EXISTS snippets (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        key TEXT NOT NULL,
+                        value TEXT NOT NULL,
+                        createdAt INTEGER NOT NULL,
+                        updatedAt INTEGER NOT NULL
+                    )
+                """.trimIndent())
+                db.execSQL("""
+                    CREATE UNIQUE INDEX IF NOT EXISTS index_snippets_key
+                    ON snippets(key)
+                """.trimIndent())
+            }
+        }
+
         fun getInstance(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance =
@@ -96,7 +117,10 @@ abstract class AppDatabase : RoomDatabase() {
                         AppDatabase::class.java,
                         "clipboard_database"
                     )
-                        .addMigrations(MIGRATION_6_7, MIGRATION_7_8, MIGRATION_8_9)
+                        .addMigrations(
+                            MIGRATION_6_7, MIGRATION_7_8,
+                            MIGRATION_8_9, MIGRATION_9_10
+                        )
                         .build()
                 INSTANCE = instance
                 instance
