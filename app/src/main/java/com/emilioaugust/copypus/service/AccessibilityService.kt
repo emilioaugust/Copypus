@@ -15,11 +15,13 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.widget.Toast
 import com.emilioaugust.copypus.R
 import com.emilioaugust.copypus.SaveClipboardActivity
 import com.emilioaugust.copypus.data.database.AppDatabase
 import com.emilioaugust.copypus.data.entity.ClipboardItem
+import com.emilioaugust.copypus.data.repository.SnippetRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
@@ -28,12 +30,16 @@ object ServiceLocator {
     lateinit var repository: ClipboardRepository
         private set
 
+    lateinit var snippetRepository: SnippetRepository
+        private set
+
     fun init(context: Context) {
         if (initialized) return
         synchronized(this) {
             if (initialized) return
             val db = AppDatabase.getInstance(context.applicationContext)
-            repository = ClipboardRepository(db.clipboardDao())
+            repository = ClipboardRepository(context.applicationContext, db.clipboardDao())
+            snippetRepository = SnippetRepository(context.applicationContext, db.snippetDao())
             initialized = true
         }
     }
@@ -52,7 +58,17 @@ class ClipboardAccessibilityService : AccessibilityService() {
 
     @Volatile private var lastSelectedAt: Long = 0L
 
+    @Volatile private var isReplacingText = false
+
     private val SELECTION_TTL_MS = 60_000L // 60 sec
+
+    private val SNIPPET_REPLACE_DELAY_MS = 1000L // 1 sec
+
+    private val snippetRegex = Regex(""";;([\p{L}0-9_\-]{1,32})""")
+
+    private val pendingReplacements = mutableMapOf<String, Runnable>()
+
+
 
     private val handler = Handler(Looper.getMainLooper())
     private var pendingSave: Runnable? = null
@@ -126,6 +142,87 @@ class ClipboardAccessibilityService : AccessibilityService() {
 
             AccessibilityEvent.TYPE_VIEW_CLICKED ->
                 handleClick(event)
+
+            AccessibilityEvent.TYPE_VIEW_FOCUSED,
+            AccessibilityEvent.TYPE_VIEW_TEXT_CHANGED ->
+                handleTextFieldEvent(event)
+        }
+    }
+
+    private fun handleTextFieldEvent(event: AccessibilityEvent) {
+        if (isReplacingText) return
+
+        val source = event.source ?: return
+        // ❌ НЕТ try/finally с recycle()
+        if (!source.isEditable) return
+        if (!source.isFocused && event.eventType == AccessibilityEvent.TYPE_VIEW_FOCUSED) return
+
+        val text = source.text?.toString() ?: return
+        if (text.isEmpty()) return
+
+        val match = snippetRegex.find(text) ?: return
+        val snippetKey = match.groupValues[1]
+        val nodeKey = buildNodeKey(source, event.packageName?.toString())
+
+        pendingReplacements.remove(nodeKey)?.let { handler.removeCallbacks(it) }
+
+        val runnable = Runnable {
+            pendingReplacements.remove(nodeKey)
+            performSnippetReplacement(source, snippetKey)
+        }
+        pendingReplacements[nodeKey] = runnable
+        handler.postDelayed(runnable, SNIPPET_REPLACE_DELAY_MS)
+
+    }
+
+    private fun buildNodeKey(node: AccessibilityNodeInfo, pkg: String?): String {
+        val viewId = node.viewIdResourceName ?: ""
+        return "$pkg|$viewId|${node.windowId}|${node.hashCode()}"
+    }
+
+    private fun performSnippetReplacement(
+        node: AccessibilityNodeInfo,
+        snippetKey: String
+    ) {
+        scope.launch {
+            val replacement = loadSnippetValue(snippetKey) ?: return@launch
+            withContext(Dispatchers.Main) {
+                try {
+                    // перепроверяем, что нода ещё жива
+                    val currentText = runCatching { node.text?.toString() }.getOrNull()
+                    if (currentText.isNullOrEmpty()) {
+                        Log.d(TAG, "node dead, skip replace")
+                        return@withContext
+                    }
+                    val match = snippetRegex.find(currentText) ?: return@withContext
+                    val newText = currentText.replaceRange(match.range, replacement)
+                    val args = Bundle().apply {
+                        putCharSequence(
+                            AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE,
+                            newText
+                        )
+                    }
+                    isReplacingText = true
+                    val ok = node.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, args)
+                    Log.d(TAG, "Snippet replace '$snippetKey' -> ok=$ok")
+                    handler.postDelayed({ isReplacingText = false }, 300L)
+                } catch (e: Exception) {
+                    isReplacingText = false
+                    Log.e(TAG, "Snippet replace failed", e)
+                }
+            }
+        }
+    }
+
+    private suspend fun loadSnippetValue(key: String): String? {
+        return withContext(Dispatchers.IO) {
+            try {
+                ServiceLocator.init(applicationContext)
+                ServiceLocator.snippetRepository.findValueByKey(key)
+            } catch (e: Exception) {
+                Log.e(TAG, "loadSnippetValue($key) failed", e)
+                null
+            }
         }
     }
 
@@ -190,6 +287,7 @@ class ClipboardAccessibilityService : AccessibilityService() {
         cancelPendingSave()
 
     }
+
     private fun extractSelectedText(node: AccessibilityNodeInfo): String? {
         val full = node.text?.toString()
         val selStart = node.textSelectionStart
@@ -456,6 +554,8 @@ class ClipboardAccessibilityService : AccessibilityService() {
 
     override fun onDestroy() {
         cancelPendingSave()
+        pendingReplacements.values.forEach { handler.removeCallbacks(it) }
+        pendingReplacements.clear()
         scope.cancel()
         super.onDestroy()
     }
