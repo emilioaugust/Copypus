@@ -107,4 +107,17 @@
     <string name="export_failed">Export failed: %1$s</string>
     <string name="wrong_password_or_corrupted_file">Wrong password or corrupted file</string>
     <string name="import_failed">Import failed: %1$s</string>
+    <string name="share_via">Share via</string>
+    <string name="snippets">Snippets</string>
+    <string name="add_new_snippet">Add new snippet</string>
+    <string name="invalid_key">Invalid key</string>
+    <string name="key_without">Key</string>
+    <string name="write_in_text_field_normal">Write in text field: ;;key</string>
+    <string name="addr">addr</string>
+    <string name="replacement_text">Replacement text</string>
+    <string name="shortcut_save_short">Save</string>
+    <string name="shortcut_save_long">Save copied item</string>
+    <string name="shortcut_disabled">Disabled</string>
+    <string name="shortcut_read_short">Get last</string>
+    <string name="shortcut_read_long">Get last item</string>
 </resources>

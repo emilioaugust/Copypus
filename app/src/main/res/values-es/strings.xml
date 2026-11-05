@@ -107,4 +107,17 @@
     <string name="export_failed">Error al exportar: %1$s</string>
     <string name="wrong_password_or_corrupted_file">Contraseña incorrecta o archivo dañado</string>
     <string name="import_failed">Error al importar: %1$s</string>
+    <string name="share_via">Compartir mediante</string>
+    <string name="snippets">Fragmentos</string>
+    <string name="add_new_snippet">Añadir nuevo fragmento</string>
+    <string name="invalid_key">Clave no válida</string>
+    <string name="key_without">Clave</string>
+    <string name="write_in_text_field_normal">Escribe en el campo de texto: ;;clave</string>
+    <string name="addr">dirección</string>
+    <string name="replacement_text">Texto de reemplazo</string>
+    <string name="shortcut_save_short">Guardar</string>
+    <string name="shortcut_save_long">Guardar elemento copiado</string>
+    <string name="shortcut_disabled">Desactivado</string>
+    <string name="shortcut_read_short">Obtener último</string>
+    <string name="shortcut_read_long">Obtener último elemento</string>
 </resources>

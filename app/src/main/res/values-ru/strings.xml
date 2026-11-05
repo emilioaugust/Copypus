@@ -107,4 +107,17 @@
     <string name="export_failed">Ошибка экспорта: %1$s</string>
     <string name="wrong_password_or_corrupted_file">Неверный пароль или повреждённый файл</string>
     <string name="import_failed">Ошибка импорта: %1$s</string>
+    <string name="share_via">Поделиться через</string>
+    <string name="snippets">Сниппеты</string>
+    <string name="add_new_snippet">Добавить новый сниппет</string>
+    <string name="invalid_key">Неверный ключ</string>
+    <string name="key_without">Ключ</string>
+    <string name="write_in_text_field_normal">Введите в текстовом поле: ;;ключ</string>
+    <string name="addr">адрес</string>
+    <string name="replacement_text">Текст замены</string>
+    <string name="shortcut_save_short">Сохранить</string>
+    <string name="shortcut_save_long">Сохранить скопированный элемент</string>
+    <string name="shortcut_disabled">Отключено</string>
+    <string name="shortcut_read_short">Получить последнее</string>
+    <string name="shortcut_read_long">Получить последний элемент</string>
 </resources>
