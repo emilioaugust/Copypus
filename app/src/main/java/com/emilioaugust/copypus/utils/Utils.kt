@@ -14,9 +14,11 @@ import android.provider.Settings
 import android.text.TextUtils
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import com.emilioaugust.copypus.R
 import com.emilioaugust.copypus.service.ClipboardAccessibilityService
+import java.io.File
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -189,4 +191,35 @@ fun isAccessibilityServiceEnabled(context: Context): Boolean {
 
 fun isOverlayPermissionGranted(context: Context): Boolean {
     return Settings.canDrawOverlays(context)
+}
+
+fun shareText(context: Context, text: String, subject: String? = null) {
+    if (text.isBlank()) return
+    val intent = Intent(Intent.ACTION_SEND).apply {
+        type = "text/plain"
+        putExtra(Intent.EXTRA_TEXT, text)
+        subject?.let { putExtra(Intent.EXTRA_SUBJECT, it) }
+    }
+    val chooser = Intent.createChooser(intent, context.getString(R.string.share_via))
+    chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    context.startActivity(chooser)
+}
+
+fun shareImage(context: Context, imageFile: File, mimeType: String = "image/*") {
+    if (!imageFile.exists()) return
+
+    val uri = FileProvider.getUriForFile(
+        context,
+        "${context.packageName}.fileprovider",
+        imageFile
+    )
+
+    val intent = Intent(Intent.ACTION_SEND).apply {
+        type = mimeType
+        putExtra(Intent.EXTRA_STREAM, uri)
+        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    }
+    val chooser = Intent.createChooser(intent, context.getString(R.string.share_via))
+    chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    context.startActivity(chooser)
 }

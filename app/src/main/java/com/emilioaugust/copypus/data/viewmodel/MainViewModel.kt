@@ -1,12 +1,8 @@
 package com.emilioaugust.copypus.data.viewmodel
 
 import android.app.Application
-import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.emilioaugust.copypus.data.backup.BackupManager
-import com.emilioaugust.copypus.data.backup.ImportResult
 import com.emilioaugust.copypus.data.database.AppDatabase
 import com.emilioaugust.copypus.data.enums.AutoDeleteOption
 import com.emilioaugust.copypus.data.entity.ClipboardItem
@@ -17,13 +13,10 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
-import java.io.InputStream
-import java.io.OutputStream
-import java.util.UUID
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val repository =
-        ClipboardRepository(AppDatabase.Companion.getInstance(application).clipboardDao())
+        ClipboardRepository(application.applicationContext, AppDatabase.Companion.getInstance(application).clipboardDao())
 
     private var lastSavedText: String? = null
     val items = repository.getAllItems().stateIn(scope = viewModelScope,

@@ -62,6 +62,13 @@ interface ClipboardDao {
 """)
     suspend fun getLatestItem(): ClipboardItem?
 
+    @Query("""
+    SELECT * FROM clipboard_items
+    ORDER BY timestamp DESC, id DESC
+    LIMIT 1
+""")
+    fun observeLatestItem(): Flow<ClipboardItem?>
+
     @Update
     suspend fun updateItem(item: ClipboardItem)
 
