@@ -1,4 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
 
-</PreferenceScreen>
+    <shortcut
+        android:shortcutId="save_clipboard"
+        android:enabled="true"
+        android:icon="@drawable/save_shortcut_icon"
+        android:shortcutShortLabel="@string/shortcut_save_short"
+        android:shortcutLongLabel="@string/shortcut_save_long"
+        android:shortcutDisabledMessage="@string/shortcut_disabled">
+
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.emilioaugust.copypus"
+            android:targetClass="com.emilioaugust.copypus.SaveClipboardActivity" />
+
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="read_last_clipboard"
+        android:enabled="true"
+        android:icon="@drawable/last_shortcut_icon"
+        android:shortcutShortLabel="@string/shortcut_read_short"
+        android:shortcutLongLabel="@string/shortcut_read_long"
+        android:shortcutDisabledMessage="@string/shortcut_disabled">
+
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.emilioaugust.copypus"
+            android:targetClass="com.emilioaugust.copypus.ReadLastClipboardActivity" />
+    </shortcut>
+
+</shortcuts>
