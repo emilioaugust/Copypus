@@ -22,6 +22,7 @@ import com.emilioaugust.copypus.data.viewmodel.MainViewModel
 import com.emilioaugust.copypus.data.datastore.SettingsDataStore
 import com.emilioaugust.copypus.data.viewmodel.SettingsViewModel
 import com.emilioaugust.copypus.data.viewmodel.SettingsViewModelFactory
+import com.emilioaugust.copypus.data.viewmodel.SnippetViewModel
 import com.emilioaugust.copypus.utils.ImageClipboardSaver
 import com.emilioaugust.copypus.ui.screens.MainScreen
 import com.emilioaugust.copypus.ui.theme.ClipboardTheme
@@ -34,6 +35,7 @@ import kotlinx.coroutines.runBlocking
 
 class MainActivity : ComponentActivity() {
     private val viewModel: MainViewModel by viewModels()
+    private val snippetViewModel: SnippetViewModel by viewModels()
     private val settingsViewModel: SettingsViewModel by viewModels {
         SettingsViewModelFactory(
             SettingsDataStore(applicationContext)
@@ -76,7 +78,7 @@ class MainActivity : ComponentActivity() {
             }
 
             ClipboardTheme(darkTheme = darkTheme) {
-                MainScreen(viewModel, settingsViewModel)
+                MainScreen(viewModel, settingsViewModel, snippetViewModel)
             }
         }
     }
