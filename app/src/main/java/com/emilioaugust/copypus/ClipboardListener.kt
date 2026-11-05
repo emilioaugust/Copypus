@@ -16,13 +16,8 @@ import kotlinx.coroutines.withContext
 import java.io.File
 
 sealed class ClipboardData {
-    data class Text(
-        val text: String
-    ) : ClipboardData()
-
-    data class Image(
-        val uri: Uri
-    ) : ClipboardData()
+    data class Text(val text: String) : ClipboardData()
+    data class Image(val uri: Uri) : ClipboardData()
 }
 
 class ClipboardManagerHelper(val appContext: Context) {
