@@ -107,6 +107,23 @@
 
         </provider>
 
+        <receiver
+            android:name=".widget.ClipboardWidgetReceiver"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/clipboard_widget_info" />
+        </receiver>
+
+        <receiver
+            android:name=".widget.RefreshWidgetReceiver"
+            android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -117,6 +134,9 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
 
         <activity
@@ -147,6 +167,13 @@
             android:theme="@style/Theme.Copypus.Transparent"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:finishOnTaskLaunch="true" />
+
+        <activity
+            android:name=".ReadLastClipboardActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Copypus.Transparent"
+            android:excludeFromRecents="true"
+            android:noHistory="true" />
 
     </application>
 
