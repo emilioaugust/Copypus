@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.glance.appwidget.updateAll
 import androidx.lifecycle.lifecycleScope
 import com.emilioaugust.copypus.data.database.AppDatabase
 import com.emilioaugust.copypus.data.datastore.SettingsDataStore
@@ -14,6 +15,7 @@ import com.emilioaugust.copypus.data.entity.ClipboardItem
 import com.emilioaugust.copypus.data.repository.ClipboardRepository
 import com.emilioaugust.copypus.utils.ImageClipboardSaver
 import com.emilioaugust.copypus.utils.LocaleHelper
+import com.emilioaugust.copypus.widget.ClipboardWidget
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
@@ -60,6 +62,7 @@ class SaveClipboardActivity : ComponentActivity() {
             )
 
         repository = ClipboardRepository(
+            this,
             AppDatabase
                 .getInstance(applicationContext)
                 .clipboardDao()
@@ -125,6 +128,8 @@ class SaveClipboardActivity : ComponentActivity() {
                 )
             )
 
+            updateClipboardWidget() // не обновляется ничего после сохранения
+
             withContext(Dispatchers.Main) {
                 Toast.makeText(
                     this@SaveClipboardActivity,
@@ -163,6 +168,9 @@ class SaveClipboardActivity : ComponentActivity() {
                 imageHash = imageHash
             )
 
+
+            updateClipboardWidget()
+
             withContext(Dispatchers.Main) {
                 Toast.makeText(
                     this@SaveClipboardActivity,
@@ -178,6 +186,10 @@ class SaveClipboardActivity : ComponentActivity() {
                 e
             )
         }
+    }
+
+    private suspend fun updateClipboardWidget() {
+        ClipboardWidget().updateAll(applicationContext)
     }
 }
 
