@@ -26,7 +26,7 @@ class LastCopiedTileService : TileService() {
     override fun onCreate() {
         super.onCreate()
         val database = AppDatabase.getInstance(applicationContext)
-        repository = ClipboardRepository(database.clipboardDao())
+        repository = ClipboardRepository(applicationContext, database.clipboardDao())
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)

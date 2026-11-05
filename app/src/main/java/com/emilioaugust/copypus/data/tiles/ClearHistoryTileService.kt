@@ -25,7 +25,7 @@ class ClearHistoryTileService : TileService() {
 
     override fun onCreate() {
         super.onCreate()
-        repository = ClipboardRepository(AppDatabase
+        repository = ClipboardRepository(applicationContext, AppDatabase
             .getInstance(applicationContext).clipboardDao()
         )
     }
