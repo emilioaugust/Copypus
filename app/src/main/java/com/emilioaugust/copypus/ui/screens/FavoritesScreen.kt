@@ -48,10 +48,7 @@ import com.emilioaugust.copypus.R
 import com.emilioaugust.copypus.ClipboardManagerHelper
 import com.emilioaugust.copypus.data.viewmodel.MainViewModel
 import com.emilioaugust.copypus.utils.formatSectionTitle
-import com.emilioaugust.copypus.utils.shareImage
-import com.emilioaugust.copypus.utils.shareText
 import kotlinx.coroutines.launch
-import java.io.File
 import kotlin.collections.component1
 import kotlin.collections.component2
 
