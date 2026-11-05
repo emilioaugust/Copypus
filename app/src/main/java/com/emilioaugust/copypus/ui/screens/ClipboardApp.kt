@@ -100,7 +100,10 @@ import com.emilioaugust.copypus.utils.ClipboardType
 import com.emilioaugust.copypus.utils.detectClipboardType
 import com.emilioaugust.copypus.utils.formatSectionTitle
 import com.emilioaugust.copypus.utils.formatTime
+import com.emilioaugust.copypus.utils.shareImage
+import com.emilioaugust.copypus.utils.shareText
 import kotlinx.coroutines.launch
+import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -130,9 +133,7 @@ fun ClipboardApp(viewModel: MainViewModel) {
                     viewModel.saveText(data.text)
                 }
 
-                is ClipboardData.Image -> {
-                    // Пока изображения здесь не обрабатываем.
-                }
+                is ClipboardData.Image -> {}
             }
         }
 
@@ -212,7 +213,7 @@ fun ClipboardApp(viewModel: MainViewModel) {
                         focusedTextColor = MaterialTheme.colorScheme.tertiary,
                         unfocusedTextColor = MaterialTheme.colorScheme.tertiary,
                         cursorColor = MaterialTheme.colorScheme.tertiary,
-                        focusedBorderColor = MaterialTheme.colorScheme.outline,
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
                         unfocusedBorderColor = MaterialTheme.colorScheme.outline,
                         focusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
                         unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -231,7 +232,7 @@ fun ClipboardApp(viewModel: MainViewModel) {
 
                 LazyColumn(
                     modifier = Modifier.weight(1f),
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     groupedItems.forEach { (sectionTitle, sectionItems) ->
@@ -294,7 +295,7 @@ fun ClipboardApp(viewModel: MainViewModel) {
                                         if (item.type == "TEXT") {
                                             editingItem = item
                                         }
-                                    }
+                                    },
                                 )
                             }
                         }
@@ -307,7 +308,6 @@ fun ClipboardApp(viewModel: MainViewModel) {
     editingItem?.let { item ->
 
         if (item.type == "TEXT" && item.text != null) {
-
             ModalBottomSheet(
                 onDismissRequest = {
                     editingItem = null
@@ -375,8 +375,8 @@ fun ClipboardApp(viewModel: MainViewModel) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ClipboardItemCard(item: ClipboardItem, onCopy: () -> Unit, onFavorite: () -> Unit, onDelete: () -> Unit,
-                      onLongClick: () -> Unit) {
+fun ClipboardItemCard(item: ClipboardItem, onCopy: () -> Unit, onFavorite: () -> Unit,
+                      onDelete: () -> Unit, onLongClick: () -> Unit) {
     var expanded by remember { mutableStateOf(false) }
     var showImageViewer by remember { mutableStateOf(false) }
     val dismissState = rememberSwipeToDismissBoxState(
@@ -604,12 +604,10 @@ fun ImageViewerDialog(
 ) {
     val scope = rememberCoroutineScope()
 
-    // Состояния для трансформаций
     var scale by remember { mutableFloatStateOf(1f) }
     var offset by remember { mutableStateOf(Offset.Zero) }
     var swipeOffsetY by remember { mutableFloatStateOf(0f) }
 
-    // Размеры контейнера и изображения (в пикселях)
     var containerSize by remember { mutableStateOf(IntSize.Zero) }
     var imageSize by remember { mutableStateOf(IntSize.Zero) }
 
@@ -626,27 +624,19 @@ fun ImageViewerDialog(
         offset = animatedOffset.value
     }
 
-    /**
-     * Возвращает максимально допустимое смещение по осям X и Y.
-     * Изображение отображается с ContentScale.Fit, поэтому его реальный размер
-     * на экране — это imageSize, отмасштабированный вписать в containerSize.
-     */
     fun getMaxOffset(currentScale: Float): Offset {
         if (containerSize == IntSize.Zero || imageSize == IntSize.Zero) {
             return Offset.Zero
         }
 
-        // Коэффициент вписывания (ContentScale.Fit) для исходного изображения
         val fitScale = minOf(
             containerSize.width.toFloat() / imageSize.width,
             containerSize.height.toFloat() / imageSize.height
         )
 
-        // Размер отображаемого изображения с учётом текущего зума
         val displayedWidth = imageSize.width * fitScale * currentScale
         val displayedHeight = imageSize.height * fitScale * currentScale
 
-        // Насколько можно сдвинуть от центра (половина "излишка")
         val maxX = ((displayedWidth - containerSize.width) / 2f).coerceAtLeast(0f)
         val maxY = ((displayedHeight - containerSize.height) / 2f).coerceAtLeast(0f)
 
@@ -700,7 +690,7 @@ fun ImageViewerDialog(
                         }
                     }
                 }
-                // ДВОЙНОЙ ТАП (зум в точку тапа / сброс)
+
                 .pointerInput(containerSize, imageSize) {
                     detectTapGestures(
                         onDoubleTap = { tapOffset ->
