@@ -101,7 +101,7 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen(viewModel: SettingsViewModel) {
+fun SettingsScreen(viewModel: SettingsViewModel, onNavigateToSnippets: () -> Unit) {
     val context = LocalContext.current
     val themeMode by viewModel.themeMode.collectAsState(initial = ThemeMode.SYSTEM)
     val autoDelete by viewModel.autoDelete.collectAsState(initial = AutoDeleteOption.NEVER)
@@ -372,6 +372,29 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 Spacer(modifier = Modifier.height(4.dp))
 
                 SettingsCard {
+                    Column(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp, horizontal = 16.dp)
+                        .clickable {
+                            onNavigateToSnippets()
+                        }
+                    ) {
+                        Row(modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(text = "Snippets", style = MaterialTheme.typography.titleMedium)
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text(text = "Save frequently used text and insert it with a tap", style = MaterialTheme.typography.bodySmall,
+                                    color = Color.Gray, modifier = Modifier.width(230.dp))
+                            }
+                            Icon(Icons.Default.KeyboardArrowRight, contentDescription = null)
+                        }
+                    }
+
+                    HorizontalDivider(thickness = 1.dp, modifier = Modifier.padding(start = 16.dp, end = 16.dp))
+
                     SettingsItem(
                         title = stringResource(R.string.auto_delete_title),
                         description = stringResource(R.string.auto_delete_text)

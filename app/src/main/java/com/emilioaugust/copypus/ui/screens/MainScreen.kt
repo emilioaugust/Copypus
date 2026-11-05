@@ -17,6 +17,7 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -28,92 +29,106 @@ import androidx.navigation.compose.rememberNavController
 import com.emilioaugust.copypus.R
 import com.emilioaugust.copypus.data.viewmodel.MainViewModel
 import com.emilioaugust.copypus.data.viewmodel.SettingsViewModel
+import com.emilioaugust.copypus.data.viewmodel.SnippetViewModel
+
+val screensWithBottomBar = setOf(
+    Screen.History.route,
+    Screen.Images.route,
+    Screen.Favorites.route,
+    Screen.Settings.route
+)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(viewModel: MainViewModel, settingsViewModel: SettingsViewModel) {
+fun MainScreen(viewModel: MainViewModel, settingsViewModel: SettingsViewModel,
+               snippetViewModel: SnippetViewModel) {
     val navController = rememberNavController()
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = backStackEntry?.destination?.route
+
     Scaffold(
         bottomBar = {
-            Column {
-                Divider(
-                    color = MaterialTheme.colorScheme.outline,
-                    thickness = 0.8.dp
-                )
-                NavigationBar(containerColor = MaterialTheme.colorScheme.tertiaryContainer) {
-                    val currentRoute =
-                        navController.currentBackStackEntryAsState().value?.destination?.route
-                    NavigationBarItem(
-                        selected = currentRoute == Screen.History.route,
-                        onClick = {
-                            navController.navigate(Screen.History.route) {
-                                launchSingleTop = true
-                            }
-                        },
-                        icon = { Icon(Icons.Default.History, contentDescription = null) },
-                        label = { Text(stringResource(R.string.history_nav)) },
-                        colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = MaterialTheme.colorScheme.primary,
-                            selectedTextColor = MaterialTheme.colorScheme.primary,
-                            unselectedIconColor = MaterialTheme.colorScheme.onTertiary,
-                            unselectedTextColor = MaterialTheme.colorScheme.onTertiary,
-                            indicatorColor = Color.Transparent
-                        )
+            if(currentRoute in screensWithBottomBar) {
+                Column {
+                    Divider(
+                        color = MaterialTheme.colorScheme.outline,
+                        thickness = 0.8.dp
                     )
+                    NavigationBar(containerColor = MaterialTheme.colorScheme.tertiaryContainer) {
+                        val currentRoute =
+                            navController.currentBackStackEntryAsState().value?.destination?.route
+                        NavigationBarItem(
+                            selected = currentRoute == Screen.History.route,
+                            onClick = {
+                                navController.navigate(Screen.History.route) {
+                                    launchSingleTop = true
+                                }
+                            },
+                            icon = { Icon(Icons.Default.History, contentDescription = null) },
+                            label = { Text(stringResource(R.string.history_nav)) },
+                            colors = NavigationBarItemDefaults.colors(
+                                selectedIconColor = MaterialTheme.colorScheme.primary,
+                                selectedTextColor = MaterialTheme.colorScheme.primary,
+                                unselectedIconColor = MaterialTheme.colorScheme.onTertiary,
+                                unselectedTextColor = MaterialTheme.colorScheme.onTertiary,
+                                indicatorColor = Color.Transparent
+                            )
+                        )
 
-                    NavigationBarItem(
-                        selected = currentRoute == Screen.Images.route,
-                        onClick = {
-                            navController.navigate(Screen.Images.route) {
-                                launchSingleTop = true
-                            }
-                        },
-                        icon = { Icon(Icons.Default.Image, contentDescription = null) },
-                        label = { Text(stringResource(R.string.images)) },
-                        colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = MaterialTheme.colorScheme.primary,
-                            selectedTextColor = MaterialTheme.colorScheme.primary,
-                            unselectedIconColor = MaterialTheme.colorScheme.onTertiary,
-                            unselectedTextColor = MaterialTheme.colorScheme.onTertiary,
-                            indicatorColor = Color.Transparent
+                        NavigationBarItem(
+                            selected = currentRoute == Screen.Images.route,
+                            onClick = {
+                                navController.navigate(Screen.Images.route) {
+                                    launchSingleTop = true
+                                }
+                            },
+                            icon = { Icon(Icons.Default.Image, contentDescription = null) },
+                            label = { Text(stringResource(R.string.images)) },
+                            colors = NavigationBarItemDefaults.colors(
+                                selectedIconColor = MaterialTheme.colorScheme.primary,
+                                selectedTextColor = MaterialTheme.colorScheme.primary,
+                                unselectedIconColor = MaterialTheme.colorScheme.onTertiary,
+                                unselectedTextColor = MaterialTheme.colorScheme.onTertiary,
+                                indicatorColor = Color.Transparent
+                            )
                         )
-                    )
 
-                    NavigationBarItem(
-                        selected = currentRoute == Screen.Favorites.route,
-                        onClick = {
-                            navController.navigate(Screen.Favorites.route) {
-                                launchSingleTop = true
-                            }
-                        },
-                        icon = { Icon(Icons.Default.Star, contentDescription = null) },
-                        label = { Text(stringResource(R.string.favorites_nav)) },
-                        colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = MaterialTheme.colorScheme.primary,
-                            selectedTextColor = MaterialTheme.colorScheme.primary,
-                            unselectedIconColor = MaterialTheme.colorScheme.onTertiary,
-                            unselectedTextColor = MaterialTheme.colorScheme.onTertiary,
-                            indicatorColor = Color.Transparent
+                        NavigationBarItem(
+                            selected = currentRoute == Screen.Favorites.route,
+                            onClick = {
+                                navController.navigate(Screen.Favorites.route) {
+                                    launchSingleTop = true
+                                }
+                            },
+                            icon = { Icon(Icons.Default.Star, contentDescription = null) },
+                            label = { Text(stringResource(R.string.favorites_nav)) },
+                            colors = NavigationBarItemDefaults.colors(
+                                selectedIconColor = MaterialTheme.colorScheme.primary,
+                                selectedTextColor = MaterialTheme.colorScheme.primary,
+                                unselectedIconColor = MaterialTheme.colorScheme.onTertiary,
+                                unselectedTextColor = MaterialTheme.colorScheme.onTertiary,
+                                indicatorColor = Color.Transparent
+                            )
                         )
-                    )
 
-                    NavigationBarItem(
-                        selected = currentRoute == Screen.Settings.route,
-                        onClick = {
-                            navController.navigate(Screen.Settings.route) {
-                                launchSingleTop = true
-                            }
-                        },
-                        icon = { Icon(Icons.Default.Settings, contentDescription = null) },
-                        label = { Text(stringResource(R.string.settings_nav)) },
-                        colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = MaterialTheme.colorScheme.primary,
-                            selectedTextColor = MaterialTheme.colorScheme.primary,
-                            unselectedIconColor = MaterialTheme.colorScheme.onTertiary,
-                            unselectedTextColor = MaterialTheme.colorScheme.onTertiary,
-                            indicatorColor = Color.Transparent
+                        NavigationBarItem(
+                            selected = currentRoute == Screen.Settings.route,
+                            onClick = {
+                                navController.navigate(Screen.Settings.route) {
+                                    launchSingleTop = true
+                                }
+                            },
+                            icon = { Icon(Icons.Default.Settings, contentDescription = null) },
+                            label = { Text(stringResource(R.string.settings_nav)) },
+                            colors = NavigationBarItemDefaults.colors(
+                                selectedIconColor = MaterialTheme.colorScheme.primary,
+                                selectedTextColor = MaterialTheme.colorScheme.primary,
+                                unselectedIconColor = MaterialTheme.colorScheme.onTertiary,
+                                unselectedTextColor = MaterialTheme.colorScheme.onTertiary,
+                                indicatorColor = Color.Transparent
+                            )
                         )
-                    )
+                    }
                 }
             }
         },
@@ -123,7 +138,15 @@ fun MainScreen(viewModel: MainViewModel, settingsViewModel: SettingsViewModel) {
             composable(Screen.History.route) { ClipboardApp(viewModel) }
             composable(Screen.Images.route) { ImagesScreen(viewModel) }
             composable(Screen.Favorites.route) { FavoritesScreen(viewModel) }
-            composable(Screen.Settings.route) { SettingsScreen(settingsViewModel) }
+            composable(Screen.Settings.route) { SettingsScreen(
+                    settingsViewModel, onNavigateToSnippets = {
+                        navController.navigate(Screen.Snippets.route)
+                    }
+                )
+            }
+            composable(Screen.Snippets.route) {
+                SnippetsScreen(snippetViewModel, onBack = { navController.popBackStack() })
+            }
         }
     }
 }
