@@ -42,9 +42,6 @@
   <a href="https://github.com/EmilioAugust/Copypus/releases">
   <img src="https://user-images.githubusercontent.com/69304392/148696068-0cfea65d-b18f-4685-82b5-329a330b1c0d.png"
   alt="Get it on GitHub" align="center" height="80" /></a>
-  <a href="obtainium://add/https%3A%2F%2Fgithub.com%2Femilioaugust%2FCopypus">
-  <img src="app/src/main/res/drawable/badge_obtainium.png"
-  alt="Get it on Obtanium" align="center" height="80" /></a>
 </div>
 <p align="center"><b>SHA-256 hash of the signing certificate are provided</b> on the <a href="https://github.com/EmilioAugust/Copypus/releases">GitHub releases page</a></p>
 <hr />
