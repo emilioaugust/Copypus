@@ -120,4 +120,17 @@
     <string name="shortcut_disabled">Desactivado</string>
     <string name="shortcut_read_short">Obtener último</string>
     <string name="shortcut_read_long">Obtener último elemento</string>
+    <string name="nothing_here">Aquí no hay nada</string>
+    <string name="save">Guardar</string>
+    <string name="get_latest_copied">Obtener lo último copiado</string>
+    <string name="no_copied_items">No hay elementos copiados</string>
+    <string name="no_text_provided">No se proporcionó texto</string>
+    <string name="text_copied">Texto copiado</string>
+    <string name="no_image_path">No hay ruta de imagen</string>
+    <string name="couldn_t_find_image_path">No se pudo encontrar la ruta de la imagen</string>
+    <string name="image_copied">Imagen copiada</string>
+    <string name="unknown_type">Tipo desconocido</string>
+    <string name="error_with_copy">Error al copiar</string>
+    <string name="couldn_t_find_image">No se pudo encontrar la imagen</string>
+    <string name="copied_image">Imagen copiada</string>
 </resources>

@@ -120,4 +120,17 @@
     <string name="shortcut_disabled">Отключено</string>
     <string name="shortcut_read_short">Получить последнее</string>
     <string name="shortcut_read_long">Получить последний элемент</string>
+    <string name="nothing_here">Здесь ничего нет</string>
+    <string name="save">Сохранить</string>
+    <string name="get_latest_copied">Получить последнее скопированное</string>
+    <string name="no_copied_items">Нет скопированных элементов</string>
+    <string name="no_text_provided">Текст не предоставлен</string>
+    <string name="text_copied">Текст скопирован</string>
+    <string name="no_image_path">Нет пути к изображению</string>
+    <string name="couldn_t_find_image_path">Не удалось найти путь к изображению</string>
+    <string name="image_copied">Изображение скопировано</string>
+    <string name="unknown_type">Неизвестный тип</string>
+    <string name="error_with_copy">Ошибка при копировании</string>
+    <string name="couldn_t_find_image">Не удалось найти изображение</string>
+    <string name="copied_image">Скопированное изображение</string>
 </resources>
