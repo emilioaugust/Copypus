@@ -153,7 +153,6 @@ class ClipboardAccessibilityService : AccessibilityService() {
         if (isReplacingText) return
 
         val source = event.source ?: return
-        // ❌ НЕТ try/finally с recycle()
         if (!source.isEditable) return
         if (!source.isFocused && event.eventType == AccessibilityEvent.TYPE_VIEW_FOCUSED) return
 
@@ -188,7 +187,6 @@ class ClipboardAccessibilityService : AccessibilityService() {
             val replacement = loadSnippetValue(snippetKey) ?: return@launch
             withContext(Dispatchers.Main) {
                 try {
-                    // перепроверяем, что нода ещё жива
                     val currentText = runCatching { node.text?.toString() }.getOrNull()
                     if (currentText.isNullOrEmpty()) {
                         Log.d(TAG, "node dead, skip replace")
@@ -297,7 +295,6 @@ class ClipboardAccessibilityService : AccessibilityService() {
             return full.substring(selStart, selEnd)
         }
 
-        // Fallback — ищем в детях
         for (i in 0 until node.childCount) {
             val child = node.getChild(i) ?: continue
             val t = child.text?.toString() ?: continue

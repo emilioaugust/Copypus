@@ -459,7 +459,7 @@ fun AddSnippetSheet(
             modifier = Modifier.fillMaxWidth(),
             minLines = 4,
             maxLines = 12,
-            label = { Text(stringResource(R.string.replacement_text)) }, // "Текст замены"
+            label = { Text(stringResource(R.string.replacement_text)) },
             placeholder = {
                 Text(stringResource(R.string.paste_text_here_placeholder), color = Color.Gray)
             },
@@ -509,7 +509,6 @@ fun EditSnippetSheet(
     var value by rememberSaveable(initialValue) { mutableStateOf(initialValue) }
     var localError by rememberSaveable { mutableStateOf<String?>(null) }
 
-    // нормализация как в репозитории
     val normalizedKey = remember(key) { key.trim().removePrefix(";;").lowercase() }
     val keyValid = normalizedKey.matches(SnippetRepository.KEY_REGEX)
     val canSave = keyValid && value.isNotBlank()
@@ -526,7 +525,6 @@ fun EditSnippetSheet(
 
         Spacer(Modifier.height(16.dp))
 
-        // ---- КЛЮЧ ----
         OutlinedTextField(
             value = key,
             onValueChange = {
@@ -547,7 +545,6 @@ fun EditSnippetSheet(
 
         Spacer(Modifier.height(12.dp))
 
-        // ---- ЗНАЧЕНИЕ ----
         OutlinedTextField(
             value = value,
             onValueChange = {

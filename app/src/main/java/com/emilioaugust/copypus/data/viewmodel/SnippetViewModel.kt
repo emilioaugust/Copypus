@@ -40,7 +40,6 @@ class SnippetViewModel(application: Application) : AndroidViewModel(application)
             } catch (e: IllegalArgumentException) {
                 _saveError.value = e.message ?: "Invalid key"
             } catch (e: IllegalStateException) {
-                // дубликат ключа
                 _saveError.value = e.message ?: "Snippet already exists"
             } catch (e: Exception) {
                 _saveError.value = "Save failed: ${e.message}"

@@ -100,10 +100,7 @@ import com.emilioaugust.copypus.utils.ClipboardType
 import com.emilioaugust.copypus.utils.detectClipboardType
 import com.emilioaugust.copypus.utils.formatSectionTitle
 import com.emilioaugust.copypus.utils.formatTime
-import com.emilioaugust.copypus.utils.shareImage
-import com.emilioaugust.copypus.utils.shareText
 import kotlinx.coroutines.launch
-import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -664,7 +661,6 @@ fun ImageViewerDialog(
                 .fillMaxSize()
                 .background(Color.Black)
                 .onSizeChanged { containerSize = it }
-                // ЗУМ + ПАНОРАМИРОВАНИЕ (мультитач)
                 .pointerInput(Unit) {
                     detectTransformGestures { centroid, pan, zoom, _ ->
                         val newScale = (scale * zoom).coerceIn(minScale, maxScale)
@@ -706,7 +702,6 @@ fun ImageViewerDialog(
                                         y = (size.height / 2f - tapOffset.y) *
                                                 (targetScale / minScale - 1f)
                                     )
-                                    // Ограничиваем и целевое смещение
                                     val targetOffset = clampOffset(rawOffset, targetScale)
                                     launch { animatedScale.animateTo(targetScale, tween(250)) }
                                     launch { animatedOffset.animateTo(targetOffset, tween(250)) }
@@ -715,7 +710,6 @@ fun ImageViewerDialog(
                         }
                     )
                 }
-                // СВАЙП ВНИЗ ДЛЯ ЗАКРЫТИЯ (только при 1x)
                 .pointerInput(scale) {
                     if (scale <= minScale + 0.01f) {
                         detectVerticalDragGestures(
@@ -738,7 +732,6 @@ fun ImageViewerDialog(
                 painter = rememberAsyncImagePainter(
                     model = imagePath,
                     onSuccess = { state ->
-                        // Запоминаем реальный размер исходного изображения
                         val size = state.result.image.width to state.result.image.height
                         imageSize = IntSize(size.first, size.second)
                     }
