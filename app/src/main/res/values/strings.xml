@@ -120,4 +120,17 @@
     <string name="shortcut_disabled">Disabled</string>
     <string name="shortcut_read_short">Get last</string>
     <string name="shortcut_read_long">Get last item</string>
+    <string name="nothing_here">Nothing here</string>
+    <string name="save">Save</string>
+    <string name="get_latest_copied">Get latest copied</string>
+    <string name="no_copied_items">No copied items</string>
+    <string name="no_text_provided">No text provided</string>
+    <string name="text_copied">Text copied</string>
+    <string name="no_image_path">No image path</string>
+    <string name="couldn_t_find_image_path">Couldn\'t find image path</string>
+    <string name="image_copied">Image copied</string>
+    <string name="unknown_type">Unknown type</string>
+    <string name="error_with_copy">Error with copy</string>
+    <string name="couldn_t_find_image">Couldn\'t find image</string>
+    <string name="copied_image">Copied image</string>
 </resources>

@@ -52,7 +52,6 @@ class SnippetRepository(
         val existing = dao.getById(id)
             ?: throw IllegalArgumentException("Snippet not found (id=$id)")
 
-        // проверка на дубликат ТОЛЬКО если ключ изменился
         if (existing.key != normalized) {
             val conflict = dao.getByKey(normalized)
             if (conflict != null && conflict.id != id) {

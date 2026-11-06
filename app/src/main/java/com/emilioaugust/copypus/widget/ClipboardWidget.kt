@@ -35,6 +35,7 @@ import androidx.glance.layout.size
 import android.graphics.BitmapFactory
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.scale
 import androidx.glance.Button
@@ -44,6 +45,7 @@ import androidx.glance.appwidget.cornerRadius
 import androidx.glance.layout.ContentScale
 import androidx.glance.text.TextStyle
 import com.emilioaugust.copypus.MainActivity
+import com.emilioaugust.copypus.R
 import com.emilioaugust.copypus.data.entity.ClipboardItem
 import com.emilioaugust.copypus.ui.theme.lighten
 import kotlinx.coroutines.Dispatchers
@@ -133,7 +135,7 @@ class ClipboardWidget : GlanceAppWidget() {
                 )
                 is LastItemUi.Image -> Image(
                     provider = ImageProvider(last.bitmap),
-                    contentDescription = "Last copied image",
+                    contentDescription = null,
                     modifier = GlanceModifier
                         .size(140.dp)
                         .cornerRadius(16.dp)
@@ -141,7 +143,7 @@ class ClipboardWidget : GlanceAppWidget() {
                     contentScale = ContentScale.Crop
                 )
                 LastItemUi.Empty -> Text(
-                    text = "Nothing here",
+                    text = stringResource(R.string.nothing_here),
                 )
             }
 
@@ -152,7 +154,7 @@ class ClipboardWidget : GlanceAppWidget() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Button(
-                    text = "Save",
+                    text = stringResource(R.string.save),
                     onClick = actionStartActivity<SaveClipboardActivity>(),
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = ColorProvider(Color(0xFF1E90FF)),
@@ -161,7 +163,7 @@ class ClipboardWidget : GlanceAppWidget() {
                 )
                 Spacer(GlanceModifier.width(8.dp))
                 Button(
-                    text = "Get latest copied",
+                    text = stringResource(R.string.get_latest_copied),
                     onClick = actionRunCallback<CopyLatestClipboardAction>(),
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = ColorProvider(Color(0xFF1E90FF).lighten()),

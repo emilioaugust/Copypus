@@ -128,7 +128,7 @@ class SaveClipboardActivity : ComponentActivity() {
                 )
             )
 
-            updateClipboardWidget() // не обновляется ничего после сохранения
+            updateClipboardWidget()
 
             withContext(Dispatchers.Main) {
                 Toast.makeText(

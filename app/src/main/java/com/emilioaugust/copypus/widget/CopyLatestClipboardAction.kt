@@ -9,6 +9,7 @@ import androidx.core.content.FileProvider
 import androidx.glance.appwidget.action.ActionCallback
 import androidx.glance.GlanceId
 import androidx.glance.action.ActionParameters
+import com.emilioaugust.copypus.R
 import com.emilioaugust.copypus.data.database.AppDatabase
 import com.emilioaugust.copypus.data.repository.ClipboardRepository
 import kotlinx.coroutines.Dispatchers
@@ -31,7 +32,7 @@ class CopyLatestClipboardAction : ActionCallback {
             val item = repository.getLatestItem()
 
             if (item == null) {
-                showMessage(context, "No copied items")
+                showMessage(context, context.getString(R.string.no_copied_items))
                 return
             }
 
@@ -44,22 +45,22 @@ class CopyLatestClipboardAction : ActionCallback {
                     val text = item.text
 
                     if (text.isNullOrBlank()) {
-                        showMessage(context, "No text provided")
+                        showMessage(context, context.getString(R.string.no_text_provided))
                         return
                     }
 
                     clipboard.setPrimaryClip(
-                        ClipData.newPlainText("Copied text", text)
+                        ClipData.newPlainText(context.getString(R.string.copied_text), text)
                     )
 
-                    showMessage(context, "Text copied")
+                    showMessage(context, context.getString(R.string.text_copied))
                 }
 
                 "IMAGE" -> {
                     val path = item.imagePath
 
                     if (path.isNullOrBlank()) {
-                        showMessage(context, "No image path")
+                        showMessage(context, context.getString(R.string.no_image_path))
                         return
                     }
 
@@ -67,7 +68,7 @@ class CopyLatestClipboardAction : ActionCallback {
 
                     if (!file.isFile || !file.canRead()) {
                         Log.e("CopyLatestAction", "Image not readable: $path")
-                        showMessage(context, "Couldn't find image path")
+                        showMessage(context, context.getString(R.string.couldn_t_find_image_path))
                         return
                     }
 
@@ -85,17 +86,17 @@ class CopyLatestClipboardAction : ActionCallback {
 
                     clipboard.setPrimaryClip(clip)
 
-                    showMessage(context, "Image copied")
+                    showMessage(context, context.getString(R.string.image_copied))
                 }
 
                 else -> {
                     Log.e("CopyLatestAction", "Unknown type: ${item.type}")
-                    showMessage(context, "Unknown type")
+                    showMessage(context, context.getString(R.string.unknown_type))
                 }
             }
         } catch (e: Exception) {
             Log.e("CopyLatestAction", "Copy failed", e)
-            showMessage(context, "Error with copy")
+            showMessage(context, context.getString(R.string.error_with_copy))
         }
     }
 

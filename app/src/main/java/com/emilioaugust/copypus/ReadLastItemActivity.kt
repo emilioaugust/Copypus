@@ -27,7 +27,6 @@ class ReadLastClipboardActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Защита: запускать только через ярлык / явный intent
         val action = intent?.action
         if (action != ACTION_READ_LAST && action != android.content.Intent.ACTION_VIEW) {
             finish()
@@ -38,7 +37,6 @@ class ReadLastClipboardActivity : ComponentActivity() {
         repository = ClipboardRepository(applicationContext, database.clipboardDao())
 
         lifecycleScope.launch {
-            // локализация как в TileService
             val language = settingsDataStore.language.first()
             val localizedContext = LocaleHelper.setLocale(applicationContext, language.code)
 
@@ -54,7 +52,7 @@ class ReadLastClipboardActivity : ComponentActivity() {
                 "TEXT" -> {
                     val text = item.text
                     if (text.isNullOrBlank()) {
-                        showToast(localizedContext, "Nothing here")
+                        showToast(localizedContext, localizedContext.getString(R.string.nothing_here))
                         finish()
                         return@launch
                     }
@@ -71,14 +69,14 @@ class ReadLastClipboardActivity : ComponentActivity() {
                 "IMAGE" -> {
                     val path = item.imagePath
                     if (path.isNullOrBlank()) {
-                        showToast(localizedContext, "No image path")
+                        showToast(localizedContext, localizedContext.getString(R.string.no_image_path))
                         finish()
                         return@launch
                     }
                     val file = File(path)
                     if (!file.isFile || !file.canRead()) {
                         Log.e(TAG, "Image not readable: $path")
-                        showToast(localizedContext, "Couldn't find image")
+                        showToast(localizedContext, getString(R.string.couldn_t_find_image))
                         finish()
                         return@launch
                     }
@@ -96,16 +94,16 @@ class ReadLastClipboardActivity : ComponentActivity() {
                                 uri
                             )
                         )
-                        showToast(localizedContext, "Copied image")
+                        showToast(localizedContext, getString(R.string.copied_image))
                     } catch (e: Exception) {
                         Log.e(TAG, "Image copy failed", e)
-                        showToast(localizedContext, "Error with copy")
+                        showToast(localizedContext, getString(R.string.error_with_copy))
                     }
                 }
 
                 else -> {
                     Log.e(TAG, "Unknown type: ${item.type}")
-                    showToast(localizedContext, "Unknown type")
+                    showToast(localizedContext, getString(R.string.unknown_type))
                 }
             }
 
