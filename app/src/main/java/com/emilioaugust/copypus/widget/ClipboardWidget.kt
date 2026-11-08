@@ -35,7 +35,6 @@ import androidx.glance.layout.size
 import android.graphics.BitmapFactory
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.scale
 import androidx.glance.Button
@@ -51,6 +50,7 @@ import com.emilioaugust.copypus.ui.theme.lighten
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import androidx.glance.LocalContext
 
 class ClipboardWidget : GlanceAppWidget() {
 
@@ -117,6 +117,7 @@ class ClipboardWidget : GlanceAppWidget() {
     @SuppressLint("RestrictedApi")
     @Composable
     private fun Content(context: Context, last: LastItemUi) {
+        val widgetContext = LocalContext.current
         Column(
             modifier = GlanceModifier
                 .fillMaxSize()
@@ -143,7 +144,7 @@ class ClipboardWidget : GlanceAppWidget() {
                     contentScale = ContentScale.Crop
                 )
                 LastItemUi.Empty -> Text(
-                    text = stringResource(R.string.nothing_here),
+                    text = widgetContext.getString(R.string.nothing_here)
                 )
             }
 
@@ -154,7 +155,7 @@ class ClipboardWidget : GlanceAppWidget() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Button(
-                    text = stringResource(R.string.save),
+                    text = widgetContext.getString(R.string.save),
                     onClick = actionStartActivity<SaveClipboardActivity>(),
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = ColorProvider(Color(0xFF1E90FF)),
@@ -163,7 +164,7 @@ class ClipboardWidget : GlanceAppWidget() {
                 )
                 Spacer(GlanceModifier.width(8.dp))
                 Button(
-                    text = stringResource(R.string.get_latest_copied),
+                    text = widgetContext.getString(R.string.get_latest_copied),
                     onClick = actionRunCallback<CopyLatestClipboardAction>(),
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = ColorProvider(Color(0xFF1E90FF).lighten()),
