@@ -1,21 +1,21 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# 1. Glance widget and its receivers/actions
+-keep class com.emilioaugust.copypus.widget.** { *; }
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# 2. Room database and generated implementation
+-keep class com.emilioaugust.copypus.data.database.AppDatabase { *; }
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# 3. DAO and generated implementation
+-keep interface com.emilioaugust.copypus.data.dao.ClipboardDao { *; }
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# 4. Entity used by the widget
+-keep class com.emilioaugust.copypus.data.entity.ClipboardItem { *; }
+
+# 5. Repository used by the widget
+-keep class com.emilioaugust.copypus.data.repository.ClipboardRepository { *; }
+
+# Keep WorkManager's default InputMerger
+-keep class androidx.work.OverwritingInputMerger {
+    public <init>();
+}
+
+-keepattributes *Annotation*,Signature,InnerClasses,EnclosingMethod
