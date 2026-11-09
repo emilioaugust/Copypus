@@ -13,8 +13,8 @@ android {
         applicationId = "com.emilioaugust.copypus"
         minSdk = 26
         targetSdk = 35
-        versionCode = 6
-        versionName = "1.6.0"
+        versionCode = 7
+        versionName = "1.6.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -55,6 +55,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
+    implementation("androidx.work:work-runtime:2.7.1")
 
     // Compose UI
     implementation("androidx.compose.ui:ui")
