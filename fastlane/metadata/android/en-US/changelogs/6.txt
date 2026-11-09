@@ -1,0 +1,5 @@
+Added widget, you can save or get latest item from widget.
+Added shortcuts, with long tap on app, you can either save copied item or get latest item.
+Added snippets in Settings, snippets let you type a short word that automatically expands into a longer saved text.
+Fixed widget, it didn't work properly
+Fixed Pause Monitoring, now it pauses even when you copy an item via Accessibility Service
