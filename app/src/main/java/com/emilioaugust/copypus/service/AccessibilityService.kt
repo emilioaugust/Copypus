@@ -20,9 +20,11 @@ import android.widget.Toast
 import com.emilioaugust.copypus.R
 import com.emilioaugust.copypus.SaveClipboardActivity
 import com.emilioaugust.copypus.data.database.AppDatabase
+import com.emilioaugust.copypus.data.datastore.SettingsDataStore
 import com.emilioaugust.copypus.data.entity.ClipboardItem
 import com.emilioaugust.copypus.data.repository.SnippetRepository
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 
 object ServiceLocator {
@@ -131,21 +133,32 @@ class ClipboardAccessibilityService : AccessibilityService() {
 
         val pkg = event.packageName?.toString()
 
-        if (pkg == packageName) {
-            Log.v(TAG, "Skip own package event")
-            return
-        }
+        if (pkg == packageName) return
 
-        when (event.eventType) {
-            AccessibilityEvent.TYPE_VIEW_TEXT_SELECTION_CHANGED ->
-                handleTextSelection(event)
+        scope.launch {
+            if (!isMonitoringEnabled()) {
+                cancelPendingSave()
 
-            AccessibilityEvent.TYPE_VIEW_CLICKED ->
-                handleClick(event)
+                lastSelectedText = null
+                lastSelectedPackage = null
+                lastSelectedAt = 0L
 
-            AccessibilityEvent.TYPE_VIEW_FOCUSED,
-            AccessibilityEvent.TYPE_VIEW_TEXT_CHANGED ->
-                handleTextFieldEvent(event)
+                return@launch
+            }
+
+            withContext(Dispatchers.Main) {
+                when (event.eventType) {
+                    AccessibilityEvent.TYPE_VIEW_TEXT_SELECTION_CHANGED ->
+                        handleTextSelection(event)
+
+                    AccessibilityEvent.TYPE_VIEW_CLICKED ->
+                        handleClick(event)
+
+                    AccessibilityEvent.TYPE_VIEW_FOCUSED,
+                    AccessibilityEvent.TYPE_VIEW_TEXT_CHANGED ->
+                        handleTextFieldEvent(event)
+                }
+            }
         }
     }
 
@@ -510,6 +523,10 @@ class ClipboardAccessibilityService : AccessibilityService() {
 
         scope.launch {
             try {
+                if (!isMonitoringEnabled()) {
+                    return@launch
+                }
+
                 repository.insertItem(
                     ClipboardItem(
                         text = text,
@@ -525,10 +542,7 @@ class ClipboardAccessibilityService : AccessibilityService() {
                     ).show()
                 }
 
-                Log.d(
-                    TAG,
-                    "Saved (${text.length}): ${text.take(40)}…"
-                )
+                Log.d(TAG, "Saved (${text.length}): ${text.take(40)}…")
 
             } catch (e: Exception) {
                 Log.e(TAG, "save failed", e)
@@ -544,6 +558,17 @@ class ClipboardAccessibilityService : AccessibilityService() {
 
         return COPY_LABELS.any { label ->
             normalized == label.lowercase()
+        }
+    }
+
+    private suspend fun isMonitoringEnabled(): Boolean {
+        return try {
+            SettingsDataStore(applicationContext)
+                .monitoringEnabledFlow
+                .first()
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to check monitoring state", e)
+            false
         }
     }
 

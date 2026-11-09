@@ -83,6 +83,15 @@ class SaveClipboardActivity : ComponentActivity() {
     }
 
     private suspend fun saveClipboard() {
+        val monitoringEnabled = SettingsDataStore(applicationContext)
+            .monitoringEnabledFlow
+            .first()
+
+        if (!monitoringEnabled) {
+            Log.d(TAG, "Monitoring is paused. Skipping clipboard save.")
+            return
+        }
+
         val clipboardManager =
             getSystemService(
                 Context.CLIPBOARD_SERVICE
